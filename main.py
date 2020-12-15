@@ -1,9 +1,10 @@
-import sys
-import requests
+from sys import argv
+from requests import get
+
 
 def CheckUrl(url):
     try:
-        respons = requests.get(url)
+        respons = get(url)
         if respons.ok:
             print("No errors")
             return True
@@ -12,20 +13,20 @@ def CheckUrl(url):
         print("Link is broken.")
         return False
 
-args = sys.argv
-control_args = {'--check':CheckUrl}
 
-if len(args) == 2 or len(args) == 3:
-    video_code = args[1].split('?v=')[1]
+control_args = {'--check': CheckUrl}
+
+if len(argv) == 2 or len(argv) == 3:
+    video_code = argv[1].split('?v=')[1]
     video_url = "https://www.dideo.ir/v/yt/{}/".format(video_code)
     print(video_url)
-    
-    if len(args) > 2:
-        if control_args.get(args[2],False):
-            print("Checking for possible errors ...")
-            control_args[args[2]](video_url)
 
-elif len(args) > 3:
+    if len(argv) > 2:
+        if control_args.get(argv[2], False):
+            print("Checking for possible errors ...")
+            control_args[argv[2]](video_url)
+
+elif len(argv) > 3:
     print("Too much args!")
 else:
     print("Missing args!")
