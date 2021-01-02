@@ -8,7 +8,7 @@ args = parser.parse_args()
 
 url = args.url
 
-def CheckUrl(url):
+def checkUrl(url):
     try:
         respons = get(url)
         if respons.ok:
@@ -19,9 +19,13 @@ def CheckUrl(url):
         print("Link is broken.")
         return False
 
-video_code = url.split('?v=')[1]
-video_url = "https://www.dideo.ir/v/yt/{}/".format(video_code)
+def getCode(url):
+    if "?v=" in url:
+        return url.split('?v=')[1]
+    return url.split("/")[-1]
+
+video_url = "https://www.dideo.ir/v/yt/{}/".format(getCode(url))
 print(video_url)
 if args.check:
     print("Checking for possible errors ...")
-    CheckUrl(video_url)
+    checkUrl(video_url)
