@@ -1,6 +1,12 @@
-from sys import argv
 from requests import get
+from argparse import ArgumentParser
 
+parser = ArgumentParser(description = "This program converts youtube video links to dideo.ir")
+parser.add_argument("url", help = "youtube link")
+parser.add_argument("--check", action = "store_true", help = "checking for possible errors")
+args = parser.parse_args()
+
+url = args.url
 
 def CheckUrl(url):
     try:
@@ -13,20 +19,9 @@ def CheckUrl(url):
         print("Link is broken.")
         return False
 
-
-control_args = {'--check': CheckUrl}
-
-if len(argv) == 2 or len(argv) == 3:
-    video_code = argv[1].split('?v=')[1]
-    video_url = "https://www.dideo.ir/v/yt/{}/".format(video_code)
-    print(video_url)
-
-    if len(argv) > 2:
-        if control_args.get(argv[2], False):
-            print("Checking for possible errors ...")
-            control_args[argv[2]](video_url)
-
-elif len(argv) > 3:
-    print("Too much args!")
-else:
-    print("Missing args!")
+video_code = url.split('?v=')[1]
+video_url = "https://www.dideo.ir/v/yt/{}/".format(video_code)
+print(video_url)
+if args.check:
+    print("Checking for possible errors ...")
+    CheckUrl(video_url)
